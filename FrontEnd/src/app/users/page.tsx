@@ -1,48 +1,86 @@
-
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import React from "react";
-import Image from "next/image";
-
-export const metadata: Metadata = {
-    title: "Users",
-    description:
-        "This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
-};
+'use client'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import Image from 'next/image';
+import { jwtDecode } from 'jwt-decode';
+import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '@/components/Layouts/DefaultLayout';
 
 interface User {
-    id: number;
+    id: string;
     name: string;
     email: string;
     role: string;
-    gender: string
-    imagesProfile: string[]
-    phoneNumber: string
-    address: string
+    gender: string;
+    imagesProfile: string[];
+    phoneNumber: string;
+    address: string;
 }
 
-const Users = async () => {
-    const res = await fetch('http://127.0.0.1:5000/api/users/get', { cache: 'no-store' });
-    const data = await res.json();
-    const users: User[] = data.data; // Access the `data` property
+const Users = () => {
+    const [users, setUsers] = useState<User[]>([]);
+    const [user, setUser] = useState<User>({
+        id: "",
+        name: "",
+        email: "",
+        role: "",
+        imagesProfile: [],
+        gender: "",
+        phoneNumber: "",
+        address: ""
+    });
+    const [loading, setLoading] = useState<boolean>(true);
+    const [refetch, setRefetch] = useState(false);
+    const [noAccess, setNoAccess] = useState(false);
+    const router = useRouter();
 
-    console.log('Users', users);
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const res = await fetch('http://127.0.0.1:5000/api/users/get', { cache: 'no-store' });
+                const data = await res.json();
+                setUsers(data.data); // Access the `data` property
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const deleteUser = async (id: number) => {
-        const res = await fetch(`http://127.0.0.1:5000/api/users/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+        fetchUsers();
+    }, [refetch]);
 
-        if (!res.ok) {
-            throw new Error('Failed to delete user');
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const isAuthenticated = localStorage.getItem('isAuthenticated');
+
+        if (token && isAuthenticated) {
+            const decodedToken: any = jwtDecode(token);
+            setUser(decodedToken); // Set the user data based on decoded token
+
+            if (decodedToken.role !== "admin") {
+                setNoAccess(true); // User does not have access
+            }
+        } else {
+            router.push('/auth/signin'); // Redirect to sign-in if not authenticated
         }
+    }, [router]);
+
+    const deleteUser = (id: string) => {
+        axios.delete(`http://127.0.0.1:5000/api/users/${id}`).then((response) => {
+            console.log('User deleted successfully', response.data);
+            setRefetch(!refetch);
+        }).catch((error) => { console.log(error) });
     };
 
+    if (noAccess) {
+        return <div>No Access</div>; // Show no access message or redirect
+    }
 
+    if (loading) {
+        return <div>Loading...</div>; // Show a loading state while fetching data
+    }
 
     return (
         <DefaultLayout>
@@ -62,7 +100,6 @@ const Users = async () => {
                                     <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white ">
                                         PhoneNumber
                                     </th>
-
                                     <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
                                         Gender
                                     </th>
@@ -77,17 +114,15 @@ const Users = async () => {
                                         <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                                             <h5 className="font-medium text-black dark:text-white">
                                                 {user.name}
-                                                {/* Check if there are images available */}
-                                                
                                             </h5>
                                             {user.imagesProfile.length > 0 && (
-                                                    <Image
-                                                        src={user.imagesProfile[0]}
-                                                        alt={user.name}
-                                                        width={48}
-                                                        height={48}
-                                                    />
-                                                )}
+                                                <Image
+                                                    src={user.imagesProfile[0]}
+                                                    alt={user.name}
+                                                    width={48}
+                                                    height={48}
+                                                />
+                                            )}
                                         </td>
                                         <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                             <p className="text-black dark:text-white">
@@ -99,8 +134,6 @@ const Users = async () => {
                                                 {user.phoneNumber}
                                             </p>
                                         </td>
-
-
                                         <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                             <p
                                                 className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${user.gender === "Men"
@@ -134,7 +167,7 @@ const Users = async () => {
                                                         />
                                                     </svg>
                                                 </button>
-                                                <button className="hover:text-primary">
+                                                <button className="hover:text-primary" onClick={() => { deleteUser(user.id) }}>
                                                     <svg
                                                         className="fill-current"
                                                         width="18"
@@ -182,6 +215,7 @@ const Users = async () => {
                                                 </button>
                                             </div>
                                         </td>
+
                                     </tr>
                                 ))}
                             </tbody>
@@ -194,4 +228,6 @@ const Users = async () => {
 };
 
 export default Users;
+
+
 
