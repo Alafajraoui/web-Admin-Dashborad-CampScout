@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "apexcharts": "^3.45.2",
+    "axios": "^1.7.2",
     "flatpickr": "^4.6.13",
     "jsvectormap": "^1.6.0",
+    "jwt-decode": "^4.0.0",
+    "moment": "^2.30.1",
     "next": "^14.2.4",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-icons": "^5.2.1"
   },
   "devDependencies": {
     "@types/node": "^20",
