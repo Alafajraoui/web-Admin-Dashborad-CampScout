@@ -2,6 +2,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Link from 'next/link'
 
 export const metadata: Metadata = {
     title: "Camping Post",
@@ -105,6 +106,7 @@ const CampingPostsPage = async () => {
                                     </div>
                                     <p className="hidden text-black dark:text-white sm:block">
                                         {camp.title}
+                                        
                                     </p>
                                 </div>
 
@@ -132,6 +134,7 @@ const CampingPostsPage = async () => {
                                         {camp.status}
                                     </p>
                                 </div>
+                                <Link href={`campingPosts/${camp.id}`}> More Details</Link>
                             </div>
                         ))}
                     </div>
