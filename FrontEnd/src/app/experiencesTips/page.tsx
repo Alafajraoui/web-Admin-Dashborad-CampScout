@@ -2,7 +2,9 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import Link from 'next/link'
+import Link from 'next/link';
+import { FaMapMarkerAlt, FaTag, FaHeart, FaShareAlt, FaCommentAlt } from 'react-icons/fa'; // Import icons
+
 export const metadata: Metadata = {
     title: "ExperiencesTips",
     description: "This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
@@ -71,114 +73,98 @@ const ExperiencesTips = async () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="ExperiencesTips" />
-            <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-                <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-                    Experiences Tips
-                </h4>
-                <div className="flex flex-col">
-                    <div className="grid grid-cols-8 rounded-sm bg-gray-2 dark:bg-meta-4">
-                        <div className="p-2.5 xl:p-5">
-                            <h5 className="text-sm font-medium uppercase xsm:text-base">
-                                Image
-                            </h5>
-                        </div>
-                        <div className="p-2.5 xl:p-5 text-center">
-                            <h5 className="text-sm font-medium uppercase xsm:text-base">
-                                Title
-                            </h5>
-                        </div>
-                        <div className="p-2.5 xl:p-5 text-center">
-                            <h5 className="text-sm font-medium uppercase xsm:text-base">
-                                Location
-                            </h5>
-                        </div>
-                        <div className="hidden p-2.5 text-center sm:block xl:p-5">
-                            <h5 className="text-sm font-medium uppercase xsm:text-base">
-                                Category
-                            </h5>
-                        </div>
-                        <div className="hidden p-2.5 text-center sm:block xl:p-5">
-                            <h5 className="text-sm font-medium uppercase xsm:text-base">
-                                Likes
-                            </h5>
-                        </div>
-                        <div className="hidden p-2.5 text-center sm:block xl:p-5">
-                            <h5 className="text-sm font-medium uppercase xsm:text-base">
-                                Shares
-                            </h5>
-                        </div>
-                        <div className="hidden p-2.5 text-center sm:block xl:p-5">
-                            <h5 className="text-sm font-medium uppercase xsm:text-base">
-                                Comments
-                            </h5>
-                        </div>
-                        <div className="hidden p-2.5 text-center sm:block xl:p-5">
-                            <h5 className="text-sm font-medium uppercase xsm:text-base">
-                                Organizer
-                            </h5>
+            <div className="flex flex-col gap-8 p-4 sm:p-8">
+                <div className="rounded-lg border border-stroke bg-white shadow-lg dark:border-strokedark dark:bg-boxdark">
+                    <div className="p-6">
+                        <h4 className="mb-6 text-2xl font-bold text-black dark:text-white">
+                            Experiences Tips
+                        </h4>
+
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                            {experiences.map((experience) => (
+                                <div
+                                    className={`flex flex-col bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm ${experiences.indexOf(experience) === experiences.length - 1 ? "" : "border-b border-stroke dark:border-strokedark"}`}
+                                    key={experience.id}
+                                >
+                                    <div className="relative flex-shrink-0">
+                                        {experience.imagesUrl.length > 0 && (
+                                            <Image
+                                                src={experience.imagesUrl[0]}
+                                                alt={experience.title}
+                                                width={500}
+                                                height={300}
+                                                className="w-full h-48 object-cover"
+                                            />
+                                        )}
+                                        <Link
+                                            href={`/experiencesTips/${experience.id}`}
+                                            className="absolute bottom-2 right-2 px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
+                                        >
+                                            More Details
+                                        </Link>
+                                    </div>
+                                    <div className="p-4 flex flex-col gap-2">
+                                        <h5 className="text-lg font-semibold text-black dark:text-white">
+                                            {experience.title}
+                                        </h5>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                                            {truncateText(experience.content, 20)} {/* Adjust length as needed */}
+                                        </p>
+                                        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mt-2">
+                                            <div className="flex items-center gap-1">
+                                                <FaMapMarkerAlt className="text-gray-600 dark:text-gray-300" />
+                                                <span>{experience.location}</span>
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <FaTag className="text-gray-600 dark:text-gray-300" />
+                                                <span>{experience.category}</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-4 mt-2">
+                                            <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                                <FaHeart />
+                                                <span>{experience.likes.length}</span>
+                                            </div>
+                                            <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                                <FaShareAlt />
+                                                <span>{experience.shares.length}</span>
+                                            </div>
+                                            <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                                <FaCommentAlt />
+                                                <span>{experience.comments.length}</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-3 mt-4">
+                                            {experience.user.imagesProfile.length > 0 && (
+                                                <div className="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden">
+                                                    <Image
+                                                        src={experience.user.imagesProfile[0]}
+                                                        alt={experience.user.name}
+                                                        width={40}
+                                                        height={40}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                            )}
+                                            <span className="text-sm text-gray-700 dark:text-gray-200">
+                                                {experience.user.name}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-
-                    {experiences.map((experience) => (
-                        <div
-                            className={`grid grid-cols-8 ${
-                                experiences.indexOf(experience) === experiences.length - 1
-                                    ? ""
-                                    : "border-b border-stroke dark:border-strokedark"
-                            }`}
-                            key={experience.id}
-                        >
-                            <div className="flex items-center justify-center p-2.5 xl:p-5">
-                                {experience.imagesUrl.length > 0 && (
-                                    <Image
-                                        src={experience.imagesUrl[0]}
-                                        alt={experience.title}
-                                        width={100}
-                                        height={100}
-                                        className="object-cover"
-                                    />
-                                )}
-                               <Link 
-                                    href={`/experiencesTips/${experience.id}`} 
-                                    className="ml-4"
-                                >
-                                    More Details
-                                </Link>
-                            </div>
-
-                            <div className="flex items-center justify-center p-2.5 xl:p-5">
-                                <p className="text-black dark:text-white">{experience.title}</p>
-                            </div>
-
-                            <div className="flex items-center justify-center p-2.5 xl:p-5">
-                                <p className="text-black dark:text-white">{experience.location}</p>
-                            </div>
-
-                            <div className="hidden sm:flex items-center justify-center p-2.5 xl:p-5">
-                                <p className="text-black dark:text-white">{experience.category}</p>
-                            </div>
-
-                            <div className="hidden sm:flex items-center justify-center p-2.5 xl:p-5">
-                                <p className="text-meta-5">{experience.likes.length}</p>
-                            </div>
-
-                            <div className="hidden sm:flex items-center justify-center p-2.5 xl:p-5">
-                                <p className="text-meta-5">{experience.shares.length}</p>
-                            </div>
-
-                            <div className="hidden sm:flex items-center justify-center p-2.5 xl:p-5">
-                                <p className="text-meta-5">{experience.comments.length}</p>
-                            </div>
-
-                            <div className="hidden sm:flex items-center justify-center p-2.5 xl:p-5">
-                                <p className="text-black dark:text-white">{experience.user.name}</p>
-                            </div>
-                        </div>
-                    ))}
                 </div>
             </div>
         </DefaultLayout>
     );
 }
 
+const truncateText = (text: string, length: number) => {
+    if (text.length <= length) return text;
+    return text.substring(0, length) + '...';
+};
+
 export default ExperiencesTips;
+

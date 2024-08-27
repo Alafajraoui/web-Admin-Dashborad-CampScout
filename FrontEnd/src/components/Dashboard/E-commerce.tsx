@@ -44,17 +44,17 @@ const ECommerce: React.FC = () => {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total Products" total={data.totalViews}>
+        <CardDataStats title="Total Users" total={data.totalUsers}>
           <svg
             className="fill-primary dark:fill-white"
-            width="22"
-            height="22"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M7 4H2V2H5V1C5 0.447715 5.44772 0 6 0H7.5C8.05228 0 8.5 0.447715 8.5 1V2H12V1C12 0.447715 12.4477 0 13 0H14.5C15.0523 0 15.5 0.447715 15.5 1V2H18C18.5523 2 19 2.44772 19 3V5H20.3284L20.6471 6.57985L21.9497 10.0262C22.2744 10.7051 21.9645 11.5 21.2936 11.5H7.2936C6.62321 11.5 6.31466 10.7051 6.64045 10.0262L6.95913 8.43686L7.35465 8.62093L7 6H4.17022L3.61555 3.17126L3.2798 2.07088H1V0H1.5C1.22386 0 1 0.223858 1 0.5V1H0V2H1.5C1.22386 2 1 2.22386 1 2.5V4H2V3H7V4ZM7 4H18V5H7V4ZM3.5 20C3.5 21.1046 4.39543 22 5.5 22C6.60457 22 7.5 21.1046 7.5 20C7.5 18.8954 6.60457 18 5.5 18C4.39543 18 3.5 18.8954 3.5 20ZM18 20C18 21.1046 18.8954 22 20 22C21.1046 22 22 21.1046 22 20C22 18.8954 21.1046 18 20 18C18.8954 18 18 18.8954 18 20Z"
+              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-3.31 0-6 2.69-6 6v1h12v-1c0-3.31-2.69-6-6-6z"
               fill="currentColor"
             />
           </svg>
@@ -101,17 +101,17 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Users" total={data.totalUsers}>
+        <CardDataStats title="Total Products" total={5}>
           <svg
             className="fill-primary dark:fill-white"
-            width="24"
-            height="24"
+            width="22"
+            height="22"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-3.31 0-6 2.69-6 6v1h12v-1c0-3.31-2.69-6-6-6z"
+              d="M7 4H2V2H5V1C5 0.447715 5.44772 0 6 0H7.5C8.05228 0 8.5 0.447715 8.5 1V2H12V1C12 0.447715 12.4477 0 13 0H14.5C15.0523 0 15.5 0.447715 15.5 1V2H18C18.5523 2 19 2.44772 19 3V5H20.3284L20.6471 6.57985L21.9497 10.0262C22.2744 10.7051 21.9645 11.5 21.2936 11.5H7.2936C6.62321 11.5 6.31466 10.7051 6.64045 10.0262L6.95913 8.43686L7.35465 8.62093L7 6H4.17022L3.61555 3.17126L3.2798 2.07088H1V0H1.5C1.22386 0 1 0.223858 1 0.5V1H0V2H1.5C1.22386 2 1 2.22386 1 2.5V4H2V3H7V4ZM7 4H18V5H7V4ZM3.5 20C3.5 21.1046 4.39543 22 5.5 22C6.60457 22 7.5 21.1046 7.5 20C7.5 18.8954 6.60457 18 5.5 18C4.39543 18 3.5 18.8954 3.5 20ZM18 20C18 21.1046 18.8954 22 20 22C21.1046 22 22 21.1046 22 20C22 18.8954 21.1046 18 20 18C18.8954 18 18 18.8954 18 20Z"
               fill="currentColor"
             />
           </svg>
@@ -122,7 +122,7 @@ const ECommerce: React.FC = () => {
         <ChartOne />
         <ChartTwo />
         <ChartThree />
-        <MapOne />
+
       </div>
 
     </>

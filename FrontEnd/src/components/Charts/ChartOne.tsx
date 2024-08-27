@@ -30,6 +30,14 @@ const ChartOne: React.FC = () => {
             name: 'Total Camping Posts',
             data: [data.campingPostsCount], // Example data, adapt as needed
           },
+          {
+            name: 'Total Experiences Tips',
+            data: [data.experiencesTipsCount], // Example data, adapt as needed
+          },
+          {
+            name: 'Total Products',
+            data: ['5'], // Example data, adapt as needed
+          },
         ];
 
         setSeries(newSeries);
