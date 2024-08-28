@@ -101,7 +101,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Products" total={5}>
+        <CardDataStats title="Total Tips" total={2}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
