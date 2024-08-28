@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     description: "This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
+
+
 interface User {
     id: number;
     email: string;
@@ -65,19 +67,22 @@ interface Experience {
     shares: Share[];
 }
 
+
+
 const ExperiencesTips = async () => {
     const res = await fetch('http://127.0.0.1:5000/api/experienceTip/all/get', { cache: 'no-store' });
     const data = await res.json();
     const experiences: Experience[] = data;
+    
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="ExperiencesTips" />
+            <Breadcrumb pageName="Experiences" />
             <div className="flex flex-col gap-8 p-4 sm:p-8">
                 <div className="rounded-lg border border-stroke bg-white shadow-lg dark:border-strokedark dark:bg-boxdark">
                     <div className="p-6">
                         <h4 className="mb-6 text-2xl font-bold text-black dark:text-white">
-                            Experiences Tips
+                            Experiences
                         </h4>
 
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -105,7 +110,7 @@ const ExperiencesTips = async () => {
                                     </div>
                                     <div className="p-4 flex flex-col gap-2">
                                         <h5 className="text-lg font-semibold text-black dark:text-white">
-                                            {experience.title}
+                                        {truncateText(experience.title, 13)}
                                         </h5>
                                         <p className="text-sm text-gray-600 dark:text-gray-300">
                                             {truncateText(experience.content, 20)} {/* Adjust length as needed */}

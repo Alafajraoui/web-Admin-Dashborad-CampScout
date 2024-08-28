@@ -130,7 +130,7 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "ExperiencesTips",
+        label: "Experiences",
         route: "/experiencesTips",
       },
       {

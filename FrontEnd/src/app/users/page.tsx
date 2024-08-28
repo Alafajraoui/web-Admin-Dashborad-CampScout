@@ -122,14 +122,21 @@ const Users = () => {
                                     <tr key={user.id} className="border-b border-gray-200 dark:border-gray-700">
                                         <td className="px-4 py-5 flex items-center space-x-3">
                                             {user.imagesProfile.length > 0 && (
-                                                <Image
-                                                    src={user.imagesProfile[0]}
-                                                    alt={user.name}
-                                                    width={48}
-                                                    height={48}
-                                                    className="rounded-full"
-                                                />
+                                                <div className="flex space-x-2">
+                                                    {user.imagesProfile.map((image, index) => (
+                                                        <div key={index} className="h-12 w-12 rounded-full overflow-hidden flex items-center justify-center">
+                                                            <Image
+                                                                src={image}
+                                                                alt={user.name}
+                                                                width={48}
+                                                                height={48}
+                                                                className="object-cover"
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             )}
+
                                             <div>
                                                 <h5 className="font-medium text-black dark:text-white">
                                                     {user.name}

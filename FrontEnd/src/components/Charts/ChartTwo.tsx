@@ -76,7 +76,7 @@ const ChartTwo: React.FC = () => {
         const response = await fetch('http://127.0.0.1:5000/api/dashboard/getChartTwo');
         const data = await response.json();
 
-        const categoryNames = data.map((item: any) => item.title);
+       const categoryNames = data.map((item: any) => item.title);
         const durations = data.map((item: any) => item.duration);
 
         setCategories(categoryNames);

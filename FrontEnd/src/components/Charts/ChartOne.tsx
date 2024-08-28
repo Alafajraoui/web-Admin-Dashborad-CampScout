@@ -31,7 +31,7 @@ const ChartOne: React.FC = () => {
             data: [data.campingPostsCount], // Example data, adapt as needed
           },
           {
-            name: 'Total Experiences Tips',
+            name: 'Total Experiences',
             data: [data.experiencesTipsCount], // Example data, adapt as needed
           },
           {
