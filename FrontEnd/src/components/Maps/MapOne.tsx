@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import L from "leaflet";
 import 'leaflet/dist/leaflet.css';
 
@@ -17,41 +17,72 @@ interface CampingPost {
 
 const MapOne: React.FC = () => {
   const [posts, setPosts] = useState<CampingPost[]>([]);
+  const mapRef = useRef<L.Map | null>(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/camping-posts');
-        //http://127.0.0.1:5000/api/dashboard/getEndpointTofetchCampingPostLocations
+        const response = await fetch('http://127.0.0.1:5000/api/dashboard/getEndpointTofetchCampingPostLocations');
+        
+        // Log the status code and response if not ok
+        if (!response.ok) {
+          console.error('Response not ok:', response.status, response.statusText);
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
         const data: CampingPost[] = await response.json();
+  
+        // Log and validate the data
+        console.log('Fetched posts:', data);
+        if (!Array.isArray(data)) {
+          throw new Error('Data is not an array');
+        }
+  
         setPosts(data);
       } catch (error) {
+        // Log the detailed error
         console.error('Error fetching camping posts:', error);
       }
     };
-
+  
     fetchPosts();
   }, []);
+ 
 
   useEffect(() => {
-    // Initialize Leaflet map
-    const map = L.map('mapOne').setView([37.8, -96], 4); // Set initial center and zoom
+    if (!mapRef.current) {
+      // Initialize the map only once
+      mapRef.current = L.map('mapOne').setView([37.8, -96], 4);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-    }).addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+      }).addTo(mapRef.current);
+    } else {
+      // Remove existing markers
+      mapRef.current.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+          mapRef.current?.removeLayer(layer);
+        }
+      });
+    }
 
     // Add markers for each camping post
     posts.forEach(post => {
-      L.marker([post.location.lat, post.location.lng])
-        .addTo(map)
-        .bindPopup(`<b>${post.title}</b><br>From ${post.startDate} to ${post.endDate}`)
-        .openPopup();
+      if (post.location.lat !== undefined && post.location.lng !== undefined) {
+        L.marker([post.location.lat, post.location.lng])
+          .addTo(mapRef.current!)
+          .bindPopup(`<b>${post.title}</b><br>From ${post.startDate} to ${post.endDate}`)
+          .openPopup();
+      } else {
+        console.error('Invalid location data:', post.location);
+      }
     });
 
     return () => {
-      // Cleanup function if needed
-      map.remove();
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
     };
   }, [posts]);
 
@@ -68,5 +99,6 @@ const MapOne: React.FC = () => {
 };
 
 export default MapOne;
+
 
 

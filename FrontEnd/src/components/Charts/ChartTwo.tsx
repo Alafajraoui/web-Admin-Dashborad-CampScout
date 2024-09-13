@@ -69,6 +69,7 @@ const options: ApexOptions = {
 const ChartTwo: React.FC = () => {
   const [series, setSeries] = useState<{ name: string; data: number[] }[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
+  const [title, setTitle] = useState<string>('Camping Post Durations');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,13 +80,15 @@ const ChartTwo: React.FC = () => {
         const categoryNames = data.map((item: any) => item.title);
         const durations = data.map((item: any) => item.duration);
 
-        setCategories(categoryNames);
+       // setCategories(categoryNames);
         setSeries([
           {
             name: "Duration",
             data: durations,
           },
         ]);
+
+        
       } catch (error) {
         console.error("Failed to fetch data", error);
       }
@@ -99,7 +102,7 @@ const ChartTwo: React.FC = () => {
       <div className="mb-4 justify-between gap-4 sm:flex">
         <div>
           <h4 className="text-xl font-semibold text-black dark:text-white">
-            Camping Post Durations
+            {title}
           </h4>
         </div>
       </div>
@@ -119,4 +122,5 @@ const ChartTwo: React.FC = () => {
 };
 
 export default ChartTwo;
+
 
